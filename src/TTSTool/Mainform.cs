@@ -1,6 +1,7 @@
 ﻿using Microsoft.CognitiveServices.Speech;
 using NAudio.Lame;
 using NAudio.Wave;
+using NAudio.Wave.SampleProviders;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -16,8 +17,8 @@ namespace TTSTool
 {
     public partial class Mainform : Form
     {
-        private Config config;
-        private bool loaded = false;
+        Config config;
+        bool loaded = false;
         public Mainform()
         {
             var langs = GetLanguages().GroupBy(t => new { t.lang, t.code }).Select(t => t.Key).ToArray();
@@ -30,7 +31,7 @@ namespace TTSTool
             cbLanguage.DataSource = langs;
             //cbLanguage.SelectedItem = langs.First(t => t.code == "zh-CN");
 
-            if(config.Lang != null)
+            if (config.Lang != null)
             {
                 cbLanguage.SelectedValue = config.Lang;
                 cbVoice.SelectedValue = config.Voice;
@@ -42,11 +43,11 @@ namespace TTSTool
 
                 chkMP3.Checked = config.MP3;
                 chkKeepWav.Checked = config.KeepWAV;
+                chkStero.Checked = config.Stero;
             }
             loaded = true;
         }
 
-        #region Event handlers
         private void btnSetting_Click(object sender, EventArgs e)
         {
             var settingDialog = new SettingDialog(config);
@@ -116,8 +117,6 @@ namespace TTSTool
         {
             chkKeepWav.Enabled = chkMP3.Checked;
         }
-
-        #endregion
 
         private (string lang, string code, string gender, string voice, string type)[] GetLanguages()
         {
@@ -548,6 +547,7 @@ zh-CN-YunfengNeural Public preview	calm, angry, disgruntled, cheerful, fearful, 
                 config.Role = cbRolePlay.SelectedValue?.ToString();
                 config.MP3 = chkMP3.Checked;
                 config.KeepWAV = chkKeepWav.Checked;
+                config.Stero = chkStero.Checked;
                 config.SaveConfig();
 
             }
@@ -579,7 +579,17 @@ zh-CN-YunfengNeural Public preview	calm, angry, disgruntled, cheerful, fearful, 
                         var tmpFile = Path.GetTempFileName();
                         var filename = GetFilename(txtInput.Text) + ".wav";
                         await stream.SaveToWaveFileAsync(tmpFile);
-                        File.Move(tmpFile, filename);
+
+                        if (chkStero.Checked)
+                        {
+                            MonoToStero(tmpFile, filename);
+                            File.Delete(tmpFile);
+                        }
+                        else
+                        {
+                            File.Move(tmpFile, filename);
+                        }
+
                         //encode mp3
                         if (chkMP3.Checked)
                         {
@@ -601,6 +611,20 @@ zh-CN-YunfengNeural Public preview	calm, angry, disgruntled, cheerful, fearful, 
                         }
                     }
                 }
+            }
+        }
+
+        private void MonoToStero(string source, string target)
+        {
+            using (var inputReader = new AudioFileReader(source))
+            {
+                // convert our mono ISampleProvider to stereo
+                var stereo = new MonoToStereoSampleProvider(inputReader);
+                stereo.LeftVolume = 1f; // full volume in left channel
+                stereo.RightVolume = 1f; // full volume in right channel
+
+                // ... OR ... could write the stereo audio out to a WAV file
+                WaveFileWriter.CreateWaveFile16(target, stereo);
             }
         }
 
@@ -626,7 +650,7 @@ zh-CN-YunfengNeural Public preview	calm, angry, disgruntled, cheerful, fearful, 
             {
                 text = text.Replace(item, '_');
             }
-            return Path.Combine(txtOutputFolder.Text, text.Substring(0, Math.Min(text.Length, 10)) + "_" + DateTime.Now.Ticks.ToString());
+            return Path.Combine(txtOutputFolder.Text, text.Substring(0, Math.Min(text.Length, 100)) + "_" + DateTime.Now.Ticks.ToString());
         }
     }
 }

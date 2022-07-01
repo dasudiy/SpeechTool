@@ -52,6 +52,7 @@ namespace TTSTool
             this.txtKey.Name = "txtKey";
             this.txtKey.Size = new System.Drawing.Size(361, 31);
             this.txtKey.TabIndex = 1;
+            this.txtKey.UseSystemPasswordChar = true;
             // 
             // label2
             // 

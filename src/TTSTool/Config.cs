@@ -19,6 +19,7 @@ namespace TTSTool
         public string Role { get; set; }
         public bool MP3 { get; set; }
         public bool KeepWAV { get; set; }
+        public bool Stero { get; set; }
         private string Json { get; set; }
 
         internal static Config LoadConfig()

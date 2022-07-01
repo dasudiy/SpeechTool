@@ -56,6 +56,7 @@ namespace TTSTool
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.txtSSML = new System.Windows.Forms.TextBox();
+            this.chkStero = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numSpeakingSpeed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPitch)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -341,11 +342,22 @@ namespace TTSTool
             this.txtSSML.Size = new System.Drawing.Size(902, 350);
             this.txtSSML.TabIndex = 0;
             // 
+            // chkStero
+            // 
+            this.chkStero.AutoSize = true;
+            this.chkStero.Location = new System.Drawing.Point(307, 515);
+            this.chkStero.Name = "chkStero";
+            this.chkStero.Size = new System.Drawing.Size(133, 29);
+            this.chkStero.TabIndex = 13;
+            this.chkStero.Text = "转为立体声";
+            this.chkStero.UseVisualStyleBackColor = true;
+            // 
             // Mainform
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1195, 555);
+            this.Controls.Add(this.chkStero);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.btnSetting);
             this.Controls.Add(this.btnGO);
@@ -412,5 +424,6 @@ namespace TTSTool
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.TextBox txtSSML;
+        private System.Windows.Forms.CheckBox chkStero;
     }
 }
