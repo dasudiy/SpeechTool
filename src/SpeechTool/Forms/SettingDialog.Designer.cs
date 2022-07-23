@@ -1,5 +1,5 @@
 ﻿
-namespace TTSTool
+namespace SpeechTool
 {
     partial class SettingDialog
     {

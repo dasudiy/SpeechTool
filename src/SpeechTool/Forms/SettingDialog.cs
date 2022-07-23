@@ -6,18 +6,18 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace TTSTool
+namespace SpeechTool
 {
     public partial class SettingDialog : Form
     {
         internal Config Config { get; set; }
 
-        public SettingDialog(Config config)
+        public SettingDialog()
         {
             InitializeComponent();
-            this.Config = config;
-            txtKey.Text = config.Key;
-            txtRegion.Text = config.Region;
+            this.Config = Program.Config;
+            txtKey.Text = Config.Key;
+            txtRegion.Text = Config.Region;
         }        
 
         private void btnOK_Click(object sender, EventArgs e)

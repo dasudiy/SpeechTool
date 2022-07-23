@@ -10,15 +10,15 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace TTSTool.Classes
+namespace SpeechTool.Classes
 {
-    public class SpeechHelper
+    public class SpeechApp
     {
         private IReadOnlyCollection<VoiceInfo> voiceInfos;
         public string Key { get; set; }
         public string Region { get; set; }
 
-        public SpeechHelper(string key, string region)
+        public SpeechApp(string key, string region)
         {
             this.Key = key;
             this.Region = region;
@@ -69,6 +69,8 @@ namespace TTSTool.Classes
                     {
                         using (var recognizer = CreateSpeechRecognizer(config, c => c.SpeechRecognitionLanguage = lang))
                         {
+                            cancellationToken.Register(() => recognizer.StopContinuousRecognitionAsync());
+
                             var tcs = new TaskCompletionSource<int>();
                             var sb = new StringBuilder();
                             recognizer.Recognized += (sender, e) =>
@@ -86,7 +88,7 @@ namespace TTSTool.Classes
                             };
                             recognizer.SessionStopped += (sender, e) =>
                             {
-                                tcs.TrySetResult(0);
+                                tcs.TrySetResult(0);                                
                             };
 
                             if (phraseList != null)
@@ -98,9 +100,9 @@ namespace TTSTool.Classes
                                 }
                             }
 
-                            await recognizer.StartContinuousRecognitionAsync().ConfigureAwait(false);
-                            tcs.Task.Wait(cancellationToken);
-                            await recognizer.StopContinuousRecognitionAsync().ConfigureAwait(false);
+                            await recognizer.StartContinuousRecognitionAsync();
+                            await tcs.Task;
+                            await recognizer.StopContinuousRecognitionAsync();
 
                             return sb.ToString();
                         }
@@ -152,16 +154,21 @@ namespace TTSTool.Classes
 
                                 if (!sourceIsSSML)
                                 {
-                                    sourceText = GetSSMLWithAutoAddBookmark(sourceText, voice, "。", "\r\n", "\n", "，");
+                                    sourceText = GetSSMLWithAutoAddBookmark(sourceText, voice, string.Empty, string.Empty, 7, 0, "。", "\r\n", "\n", "，");
                                     sourceIsSSML = true;
                                     await File.WriteAllTextAsync(outputFile + ".xml", sourceText, Encoding.UTF8);
                                 }
                                 var srtBuilder = new SRTBuilder(outputFile + ".srt");
                                 synth.BookmarkReached += (sender, e) =>
                                 {
-                                    srtBuilder.Write(e.AudioOffset.To<long>() * 3, e.Text);
+                                    Console.WriteLine($"{e.Text}, offset {e.AudioOffset / 10000} ms.");
+                                    srtBuilder.Write(e.AudioOffset.To<long>(), e.Text);
                                 };
-                                _ = tcs.Task.ContinueWith(t => srtBuilder.Dispose());
+                                _ = tcs.Task.ContinueWith(t =>
+                                {
+                                    srtBuilder.FixLength(waveWriter.TotalTime.Ticks);
+                                    srtBuilder.Dispose();
+                                });
                                 synth.SynthesisCompleted += (sender, e) => tcs.SetResult(0);
                                 synth.SynthesisCanceled += (sender, e) => tcs.SetResult(1);
                             }
@@ -240,16 +247,18 @@ namespace TTSTool.Classes
 
         }
 
-        public string GetSSMLWithAutoAddBookmark(string sourceText, string voiceName, params string[] bookmarkSymbols)
+        public string GetSSMLWithAutoAddBookmark(string sourceText, string voiceName, string style, string role, int rate, int pitch, params string[] bookmarkSymbols)
         {
-            XElement voice;
-            var doc = new XDocument(SSMLHelper.BuildSpeak(voice = SSMLHelper.BuildVoice(voiceName)));
+            XElement prosody;
+            var doc = new XDocument(SSMLHelper.BuildSpeak(
+                SSMLHelper.BuildVoice(voiceName, style, role,
+                prosody = SSMLHelper.BuildProsody(rate, pitch))));
 
             foreach (var item in sourceText.Split(bookmarkSymbols, StringSplitOptions.RemoveEmptyEntries))
             {
-                voice.Add(item);
-                voice.Add("，");
-                voice.Add(SSMLHelper.BuildBookmark(item));
+                prosody.Add(item);
+                prosody.Add("，");
+                prosody.Add(SSMLHelper.BuildBookmark(item));
             }
             return doc.ToString();
         }

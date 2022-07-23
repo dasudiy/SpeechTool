@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "TTSTool": {
-      "commandName": "Project",
-      "commandLineArgs": "--action stt --input c:\\studio_video_1654751336845.mp4  --lang zh-CN --srt"
-    }
-  }
-}

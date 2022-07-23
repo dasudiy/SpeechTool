@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace TTSTool.Classes
+namespace SpeechTool.Classes
 {
     public class PullAudioInputStreamAdapter : PullAudioInputStreamCallback
     {

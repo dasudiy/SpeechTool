@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace TTSTool.Classes
+namespace SpeechTool.Classes
 {
     public static class ConvertExtension
     {
@@ -185,5 +185,11 @@ namespace TTSTool.Classes
                 throw new NotImplementedException($"无法将{obj?.ToString()}({obj?.GetType().Name})转换为{targetType.Name}");
             }
         }
+
+        public static float MapValue(float x, float v1, float v2, float v3, float v4)
+        {
+            return ((x - v1) / (v2 - v1)) * (v4 - v3) + v3;
+        }
+
     }
 }
