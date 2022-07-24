@@ -7,7 +7,25 @@ namespace SpeechTool
 {
     static class Program
     {
-        const string CLI_HELP_TEXT = @"this is help text";
+        const string CLI_HELP_TEXT = @"帮助
+  --help                            显示这个信息
+操作
+  --action tts|stt                  语音生成|语音识别
+语音生成
+  --sourceText 需转语音的文字       直接输入文字
+  --input 文本文件                  从文件输入
+  --ssml                            输入内容为ssml格式，默认为文本格式
+  --lang 语言                       输入的语言，如zh-CN
+  --voice 声音                      使用的声音，如zh-CN-YunxiNeural
+  --stereo                          将输出音频转为立体声，默认为单声道
+  --mp3                             将输出音频转码为MP3格式，默认为WAV
+  --srt                             同时生成SRT字幕文件
+语音识别
+  --input 媒体文件                  用语语音识别的音频或视频文件
+  --lang 语言                       输入的语言，如zh-CN
+  --phrase 短语1,短语2...           用语提高精确度的短语
+  --srt                             生成SRT字幕文件
+";
         public static SpeechApp App { get; set; }
         public static Config Config { get; set; }
 
@@ -18,7 +36,13 @@ namespace SpeechTool
         [STAThread]
         static void Main(string[] args) //use async Task will cause BrowserFolderDialog cannot display
         {
-            WindowsApi.ShowConsoleWindow();
+            if (args.ArgumentExist("--help"))
+            {
+                WindowsApi.ShowConsoleWindow();
+                Console.WriteLine(CLI_HELP_TEXT);                
+                return;
+            }
+
             Console.WriteLine(@"
    _______ _______ _______ _______ _______ __   __   _______ _______ _______ ___     
   |       |       |       |       |       |  | |  | |       |       |       |   |    
@@ -35,13 +59,6 @@ namespace SpeechTool
   | |_|   | |   |   |       |   _   |_____| |       | |       |   | |   |            
   |_______| |___|   |______||__| |__|_______|_______| |______||___| |___|            
 ");
-            if (args.ArgumentExist("--help"))
-            {
-                WindowsApi.ShowConsoleWindow();
-                Console.WriteLine(CLI_HELP_TEXT);
-                Console.Read();
-                return;
-            }
 
             Config = Config.LoadConfig();
             Config.PropertyChanged += (sender, e) =>
