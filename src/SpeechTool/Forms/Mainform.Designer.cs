@@ -34,6 +34,8 @@ namespace SpeechTool
             this.帮助HToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.设置SToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.退出XToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.查看VToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.控制台CToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.帮助HToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.关于ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -41,8 +43,6 @@ namespace SpeechTool
             this.tts1 = new SpeechTool.Forms.TTS();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.stt1 = new SpeechTool.Forms.STT();
-            this.查看VToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.控制台CToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -56,6 +56,7 @@ namespace SpeechTool
             this.帮助HToolStripMenuItem,
             this.查看VToolStripMenuItem,
             this.帮助HToolStripMenuItem1});
+            this.menuStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1269, 33);
@@ -74,15 +75,31 @@ namespace SpeechTool
             // 设置SToolStripMenuItem
             // 
             this.设置SToolStripMenuItem.Name = "设置SToolStripMenuItem";
-            this.设置SToolStripMenuItem.Size = new System.Drawing.Size(173, 34);
+            this.设置SToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.设置SToolStripMenuItem.Text = "设置(&S)";
             this.设置SToolStripMenuItem.Click += new System.EventHandler(this.设置SToolStripMenuItem_Click);
             // 
             // 退出XToolStripMenuItem
             // 
             this.退出XToolStripMenuItem.Name = "退出XToolStripMenuItem";
-            this.退出XToolStripMenuItem.Size = new System.Drawing.Size(173, 34);
+            this.退出XToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.退出XToolStripMenuItem.Text = "退出(&X)";
+            this.退出XToolStripMenuItem.Click += new System.EventHandler(this.退出XToolStripMenuItem_Click);
+            // 
+            // 查看VToolStripMenuItem
+            // 
+            this.查看VToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.控制台CToolStripMenuItem});
+            this.查看VToolStripMenuItem.Name = "查看VToolStripMenuItem";
+            this.查看VToolStripMenuItem.Size = new System.Drawing.Size(87, 29);
+            this.查看VToolStripMenuItem.Text = "查看(&V)";
+            // 
+            // 控制台CToolStripMenuItem
+            // 
+            this.控制台CToolStripMenuItem.Name = "控制台CToolStripMenuItem";
+            this.控制台CToolStripMenuItem.Size = new System.Drawing.Size(192, 34);
+            this.控制台CToolStripMenuItem.Text = "控制台(&C)";
+            this.控制台CToolStripMenuItem.Click += new System.EventHandler(this.控制台CToolStripMenuItem_Click);
             // 
             // 帮助HToolStripMenuItem1
             // 
@@ -150,21 +167,6 @@ namespace SpeechTool
             this.stt1.Size = new System.Drawing.Size(1225, 603);
             this.stt1.TabIndex = 0;
             // 
-            // 查看VToolStripMenuItem
-            // 
-            this.查看VToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.控制台CToolStripMenuItem});
-            this.查看VToolStripMenuItem.Name = "查看VToolStripMenuItem";
-            this.查看VToolStripMenuItem.Size = new System.Drawing.Size(87, 29);
-            this.查看VToolStripMenuItem.Text = "查看(&V)";
-            // 
-            // 控制台CToolStripMenuItem
-            // 
-            this.控制台CToolStripMenuItem.Name = "控制台CToolStripMenuItem";
-            this.控制台CToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
-            this.控制台CToolStripMenuItem.Text = "控制台(&C)";
-            this.控制台CToolStripMenuItem.Click += new System.EventHandler(this.控制台CToolStripMenuItem_Click);
-            // 
             // Mainform
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
@@ -175,6 +177,7 @@ namespace SpeechTool
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Mainform";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Speech Tool";
             this.Load += new System.EventHandler(this.Mainform_Load);
             this.menuStrip1.ResumeLayout(false);

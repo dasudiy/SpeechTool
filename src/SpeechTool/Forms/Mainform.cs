@@ -31,21 +31,6 @@ namespace SpeechTool
             await this.stt1.Init();
         }
 
-        private async void 设置SToolStripMenuItem_Click(object sender, EventArgs e)
-        {        
-            using (var settingDialog = new SettingDialog())
-            {
-                RETRY:
-                if(settingDialog.ShowDialog(this) == DialogResult.OK)
-                {
-                    if (!await CheckKeyValid())
-                    {
-                        goto RETRY;
-                    }
-                }
-            }
-        }
-
         private async Task<bool> CheckKeyValid()
         {
             try
@@ -57,6 +42,20 @@ namespace SpeechTool
             {
                 //TODO: 区分异常
                 return false;
+            }
+        }
+        private async void 设置SToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var settingDialog = new SettingDialog())
+            {
+            RETRY:
+                if (settingDialog.ShowDialog(this) == DialogResult.OK)
+                {
+                    if (!await CheckKeyValid())
+                    {
+                        goto RETRY;
+                    }
+                }
             }
         }
 
@@ -81,6 +80,11 @@ namespace SpeechTool
                 WindowsApi.HideConsoleWindow();
             }
 
+        }
+
+        private void 退出XToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
