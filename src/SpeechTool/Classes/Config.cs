@@ -94,6 +94,13 @@ namespace SpeechTool
             set => SetField(ref f_SRT, value);
         }
 
+        private bool f_ShowConsole;
+        public bool ShowConsole
+        {
+            get => f_ShowConsole;
+            set => SetField(ref f_ShowConsole, value);
+        }
+
         private string Json { get; set; }
 
         internal static Config LoadConfig()

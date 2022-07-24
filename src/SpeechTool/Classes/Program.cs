@@ -56,7 +56,10 @@ namespace SpeechTool
             switch (args.ArgumentRead("--action", RunType.ui))
             {
                 case RunType.ui:
-                    //WindowsApi.HideConsoleWindow();
+                    if (!Config.ShowConsole)
+                    {
+                        WindowsApi.HideConsoleWindow();
+                    }                    
                     Application.SetHighDpiMode(HighDpiMode.SystemAware);
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);

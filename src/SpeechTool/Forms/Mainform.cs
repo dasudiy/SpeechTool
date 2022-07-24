@@ -1,4 +1,5 @@
-﻿using SpeechTool.Forms;
+﻿using SpeechTool.Classes;
+using SpeechTool.Forms;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -17,8 +18,9 @@ namespace SpeechTool
         {
             if (!await CheckKeyValid())
             {
-                设置SToolStripMenuItem_Click(sender, e);                
+                设置SToolStripMenuItem_Click(sender, e);
             }
+            控制台CToolStripMenuItem.Checked = Program.Config.ShowConsole;
             this.tabControl1.Enabled = true;
             await this.tts1.Init();
             await this.stt1.Init();
@@ -53,10 +55,25 @@ namespace SpeechTool
 
         private void 关于ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using(var about = new About())
+            using (var about = new About())
             {
                 about.ShowDialog();
             }
+        }
+
+        private void 控制台CToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            控制台CToolStripMenuItem.Checked = !控制台CToolStripMenuItem.Checked;
+            Program.Config.ShowConsole = 控制台CToolStripMenuItem.Checked;
+            if (控制台CToolStripMenuItem.Checked)
+            {
+                WindowsApi.ShowConsoleWindow();
+            }
+            else
+            {
+                WindowsApi.HideConsoleWindow();
+            }
+
         }
     }
 }
