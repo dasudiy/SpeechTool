@@ -159,6 +159,7 @@ namespace SpeechTool.Forms
             this.Controls.Add(this.btnOpen);
             this.Controls.Add(this.btnBrowse);
             this.Controls.Add(this.txtInputFile);
+            this.DoubleBuffered = true;
             this.Name = "STT";
             this.Size = new System.Drawing.Size(1205, 798);
             this.ResumeLayout(false);

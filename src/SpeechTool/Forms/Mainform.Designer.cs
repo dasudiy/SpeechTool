@@ -29,6 +29,7 @@ namespace SpeechTool
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Mainform));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.帮助HToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.设置SToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -91,7 +92,7 @@ namespace SpeechTool
             // 关于ToolStripMenuItem
             // 
             this.关于ToolStripMenuItem.Name = "关于ToolStripMenuItem";
-            this.关于ToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.关于ToolStripMenuItem.Size = new System.Drawing.Size(174, 34);
             this.关于ToolStripMenuItem.Text = "关于(&A)";
             this.关于ToolStripMenuItem.Click += new System.EventHandler(this.关于ToolStripMenuItem_Click);
             // 
@@ -153,8 +154,8 @@ namespace SpeechTool
             this.ClientSize = new System.Drawing.Size(1269, 650);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.menuStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
-            this.MaximizeBox = false;
             this.Name = "Mainform";
             this.Text = "Speech Tool";
             this.Load += new System.EventHandler(this.Mainform_Load);

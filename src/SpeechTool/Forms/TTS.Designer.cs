@@ -384,6 +384,7 @@ namespace SpeechTool.Forms
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label1);
+            this.DoubleBuffered = true;
             this.Name = "TTS";
             this.Size = new System.Drawing.Size(1205, 577);
             this.Load += new System.EventHandler(this.TTS_Load);

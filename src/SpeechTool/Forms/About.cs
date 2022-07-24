@@ -20,5 +20,15 @@ namespace SpeechTool.Forms
                 pictureBox1.BackgroundImage = Image.FromStream(stream);
             }
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

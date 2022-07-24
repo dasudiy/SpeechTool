@@ -4,6 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
+    <ApplicationIcon>Resources\9070866_voice_one_icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
