@@ -35,6 +35,7 @@ namespace SpeechTool
             this.txtRegion = new System.Windows.Forms.TextBox();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.SuspendLayout();
             // 
             // label1
@@ -72,7 +73,7 @@ namespace SpeechTool
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(363, 97);
+            this.btnCancel.Location = new System.Drawing.Point(363, 110);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(112, 34);
             this.btnCancel.TabIndex = 2;
@@ -82,7 +83,7 @@ namespace SpeechTool
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(245, 97);
+            this.btnOK.Location = new System.Drawing.Point(245, 110);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(112, 34);
             this.btnOK.TabIndex = 2;
@@ -90,13 +91,25 @@ namespace SpeechTool
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Location = new System.Drawing.Point(144, 115);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(95, 25);
+            this.linkLabel1.TabIndex = 3;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "注册Azure";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            // 
             // SettingDialog
             // 
             this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(487, 143);
+            this.ClientSize = new System.Drawing.Size(487, 158);
+            this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.txtRegion);
@@ -121,5 +134,6 @@ namespace SpeechTool
         private System.Windows.Forms.TextBox txtRegion;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnOK;
+        private System.Windows.Forms.LinkLabel linkLabel1;
     }
 }

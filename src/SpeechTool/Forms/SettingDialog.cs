@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
@@ -18,7 +19,7 @@ namespace SpeechTool
             this.Config = Program.Config;
             txtKey.Text = Config.Key;
             txtRegion.Text = Config.Region;
-        }        
+        }
 
         private void btnOK_Click(object sender, EventArgs e)
         {
@@ -28,7 +29,7 @@ namespace SpeechTool
                 Config.Region = txtRegion.Text;
                 this.DialogResult = DialogResult.OK;
                 this.Close();
-            }            
+            }
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -41,6 +42,15 @@ namespace SpeechTool
         {
             //TODO: validate input;
             return true;
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://azure.microsoft.com/zh-cn/free/",
+                UseShellExecute = true
+            });
         }
     }
 }

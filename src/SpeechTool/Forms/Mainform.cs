@@ -19,6 +19,11 @@ namespace SpeechTool
             if (!await CheckKeyValid())
             {
                 设置SToolStripMenuItem_Click(sender, e);
+                if (!await CheckKeyValid())
+                {
+                    this.Close();
+                    return;
+                }
             }
             控制台CToolStripMenuItem.Checked = Program.Config.ShowConsole;
             this.tabControl1.Enabled = true;
@@ -27,14 +32,16 @@ namespace SpeechTool
         }
 
         private async void 设置SToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-        RETRY:
-            var settingDialog = new SettingDialog();
-            if (settingDialog.ShowDialog() == DialogResult.OK)
+        {        
+            using (var settingDialog = new SettingDialog())
             {
-                if (!await CheckKeyValid())
+                RETRY:
+                if(settingDialog.ShowDialog(this) == DialogResult.OK)
                 {
-                    goto RETRY;
+                    if (!await CheckKeyValid())
+                    {
+                        goto RETRY;
+                    }
                 }
             }
         }
