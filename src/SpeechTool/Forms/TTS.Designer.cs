@@ -126,6 +126,7 @@ namespace SpeechTool.Forms
             this.txtSSML.Location = new System.Drawing.Point(3, 3);
             this.txtSSML.Multiline = true;
             this.txtSSML.Name = "txtSSML";
+            this.txtSSML.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtSSML.Size = new System.Drawing.Size(902, 350);
             this.txtSSML.TabIndex = 0;
             // 
