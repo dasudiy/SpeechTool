@@ -62,6 +62,7 @@ namespace SpeechTool.Forms
             chkMP3.DataBindings.Add(new Binding("Checked", Program.Config, nameof(Program.Config.MP3)));
             chkStero.DataBindings.Add(new Binding("Checked", Program.Config, nameof(Program.Config.Stero)));
             chkSRT.DataBindings.Add(new Binding("Checked", Program.Config, nameof(Program.Config.SRT)));
+            chkPlay.DataBindings.Add(new Binding("Checked", Program.Config, nameof(Program.Config.Playback)));
 
             txtOutputFolder.DataBindings.Add(new Binding("Text", Program.Config, nameof(Program.Config.OutputFolder)));
         }
@@ -108,7 +109,8 @@ namespace SpeechTool.Forms
                 GetFilename(txtInput.Text) + (chkMP3.Checked ? ".mp3" : ".wav"),
                 chkStero.Checked,
                 chkMP3.Checked,
-                true);
+                chkSRT.Checked,
+                chkPlay.Checked);
             btnGO.Enabled = true;
         }
 

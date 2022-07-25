@@ -56,6 +56,7 @@ namespace SpeechTool.Forms
             this.label1 = new System.Windows.Forms.Label();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.chkSRT = new System.Windows.Forms.CheckBox();
+            this.chkPlay = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -358,10 +359,22 @@ namespace SpeechTool.Forms
             this.chkSRT.Text = "生成SRT字幕文件";
             this.chkSRT.UseVisualStyleBackColor = true;
             // 
+            // chkPlay
+            // 
+            this.chkPlay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.chkPlay.AutoSize = true;
+            this.chkPlay.Location = new System.Drawing.Point(479, 519);
+            this.chkPlay.Name = "chkPlay";
+            this.chkPlay.Size = new System.Drawing.Size(133, 29);
+            this.chkPlay.TabIndex = 38;
+            this.chkPlay.Text = "完成后播放";
+            this.chkPlay.UseVisualStyleBackColor = true;
+            // 
             // TTS
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.chkPlay);
             this.Controls.Add(this.chkSRT);
             this.Controls.Add(this.chkStero);
             this.Controls.Add(this.tabControl1);
@@ -429,5 +442,6 @@ namespace SpeechTool.Forms
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.CheckBox chkSRT;
+        private System.Windows.Forms.CheckBox chkPlay;
     }
 }

@@ -18,6 +18,7 @@ namespace SpeechTool
         {
             this.Speed = 1;
             this.Pitch = 1;
+            this.Playback = true;
         }
 
         private string f_Key;
@@ -99,6 +100,13 @@ namespace SpeechTool
         {
             get => f_ShowConsole;
             set => SetField(ref f_ShowConsole, value);
+        }
+
+        private bool f_Playback;
+        public bool Playback
+        {
+            get => f_Playback;
+            set => SetField(ref f_Playback, value);
         }
 
         private string Json { get; set; }

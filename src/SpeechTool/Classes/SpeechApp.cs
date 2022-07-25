@@ -88,7 +88,7 @@ namespace SpeechTool.Classes
                             };
                             recognizer.SessionStopped += (sender, e) =>
                             {
-                                tcs.TrySetResult(0);                                
+                                tcs.TrySetResult(0);
                             };
 
                             if (phraseList != null)
@@ -120,7 +120,8 @@ namespace SpeechTool.Classes
             string outputFile,
             bool toStereo,
             bool encodeToMP3,
-            bool generateSRTFile)
+            bool generateSRTFile,
+            bool playback = false)
         {
             if (string.IsNullOrWhiteSpace(sourceText) && File.Exists(inputFile))
             {
@@ -211,6 +212,26 @@ namespace SpeechTool.Classes
                         using (var inputReader = new WaveFileReader(originalStream))
                         {
                             WaveFileWriter.WriteWavFileToStream(ms2, inputReader.ToSampleProvider().ToStereo().ToWaveProvider16());
+                        }
+                    }
+                }
+
+                if (playback)
+                {
+                    ms2.Position = 0;
+                    using (var inputReader = new WaveFileReader(ms2))
+                    {
+                        using (var outputDevice = new WaveOutEvent())
+                        {
+                            outputDevice.Init(inputReader);
+                            outputDevice.Play();
+                            var tcs = new TaskCompletionSource<bool>();
+                            outputDevice.PlaybackStopped += (sender, e) =>
+                            {
+                                tcs.TrySetResult(e.Exception == null);
+                            };
+
+                            await tcs.Task;
                         }
                     }
                 }
