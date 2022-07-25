@@ -79,6 +79,41 @@ namespace SpeechTool.Classes
                                 {
                                     sb.AppendLine(e.Result.Text);
                                     recognizedFn.Invoke(e);
+
+                                    Console.WriteLine($"RECOGNIZED: Text = {e.Result.Text}");
+                                    Console.WriteLine("  Detailed results:");
+
+                                    // The first item in detailedResults corresponds to the recognized text
+                                    // (NOT the item with the highest confidence number!)
+                                    var detailedResults = e.Result.Best();
+                                    foreach (var item in detailedResults)
+                                    {
+                                        Console.WriteLine($"\tConfidence: {item.Confidence}\n\tText: {item.Text}\n\tLexicalForm: {item.LexicalForm}\n\tNormalizedForm: {item.NormalizedForm}\n\tMaskedNormalizedForm: {item.MaskedNormalizedForm}");
+                                        Console.WriteLine($"\tWord-level timing:");
+                                        Console.WriteLine($"\t\tWord | Offset | Duration");
+
+                                        // Word-level timing
+                                        foreach (var word in item.Words)
+                                        {
+                                            Console.WriteLine($"\t\t{word.Word} {word.Offset} {word.Duration}");
+                                        }
+                                    }
+                                }
+                                else if (e.Result.Reason == ResultReason.NoMatch)
+                                {
+                                    Console.WriteLine($"NOMATCH: Speech could not be recognized.");
+                                }
+                                else if (e.Result.Reason == ResultReason.Canceled)
+                                {
+                                    var cancellation = CancellationDetails.FromResult(e.Result);
+                                    Console.WriteLine($"CANCELED: Reason={cancellation.Reason}");
+
+                                    if (cancellation.Reason == CancellationReason.Error)
+                                    {
+                                        Console.WriteLine($"CANCELED: ErrorCode={cancellation.ErrorCode}");
+                                        Console.WriteLine($"CANCELED: ErrorDetails={cancellation.ErrorDetails}");
+                                        Console.WriteLine($"CANCELED: Did you update the subscription info?");
+                                    }
                                 }
                             };
 
@@ -106,7 +141,6 @@ namespace SpeechTool.Classes
 
                             return sb.ToString();
                         }
-
                     }
                 }
             }
@@ -133,9 +167,9 @@ namespace SpeechTool.Classes
             }
 
             byte[] binary;
-            using (var ms = new MemoryStream())
+            using (var waveStream = new MemoryStream())
             {
-                using (var waveWriter = new WaveFileWriter(ms, new WaveFormat(16000, 16, 1)))
+                using (var waveWriter = new WaveFileWriter(waveStream, new WaveFormat(16000, 16, 1)))
                 {
                     using (var audioConfig = AudioConfig.FromStreamOutput(new PushAudioOutputStreamAdapter(b =>
                     {
@@ -196,7 +230,7 @@ namespace SpeechTool.Classes
                         }
                     }
                 }
-                binary = ms.ToArray();
+                binary = waveStream.ToArray();
             }
 
             var ms2 = new MemoryStream(binary);
@@ -212,26 +246,6 @@ namespace SpeechTool.Classes
                         using (var inputReader = new WaveFileReader(originalStream))
                         {
                             WaveFileWriter.WriteWavFileToStream(ms2, inputReader.ToSampleProvider().ToStereo().ToWaveProvider16());
-                        }
-                    }
-                }
-
-                if (playback)
-                {
-                    ms2.Position = 0;
-                    using (var inputReader = new WaveFileReader(ms2))
-                    {
-                        using (var outputDevice = new WaveOutEvent())
-                        {
-                            outputDevice.Init(inputReader);
-                            outputDevice.Play();
-                            var tcs = new TaskCompletionSource<bool>();
-                            outputDevice.PlaybackStopped += (sender, e) =>
-                            {
-                                tcs.TrySetResult(e.Exception == null);
-                            };
-
-                            await tcs.Task;
                         }
                     }
                 }
@@ -260,12 +274,33 @@ namespace SpeechTool.Classes
                     await ms2.CopyToAsync(fs);
                     await fs.FlushAsync();
                 }
+
+                if (playback)
+                {
+                    using (var waveStream = new MemoryStream(binary))
+                    {
+                        using (var inputReader = new WaveFileReader(waveStream))
+                        {
+                            using (var outputDevice = new WaveOutEvent())
+                            {
+                                outputDevice.Init(inputReader);
+                                outputDevice.Play();
+                                var tcs = new TaskCompletionSource<bool>();
+                                outputDevice.PlaybackStopped += (sender, e) =>
+                                {
+                                    tcs.TrySetResult(e.Exception == null);
+                                };
+
+                                await tcs.Task;
+                            }
+                        }
+                    }
+                }
             }
             finally
             {
                 ms2.Dispose();
             }
-
         }
 
         public string GetSSMLWithAutoAddBookmark(string sourceText, string voiceName, string style, string role, int rate, int pitch, params string[] bookmarkSymbols)
